@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E2E-Commerce - Demonstração</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .demo-header h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .demo-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        .demo-section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .demo-section h2 i {
+            color: #667eea;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        .feature-list li i {
+            color: #28a745;
+            width: 20px;
+        }
+        .credentials {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .credentials h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .credentials p {
+            margin: 0.25rem 0;
+            font-family: monospace;
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        .demo-actions {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .warning i {
+            color: #f39c12;
+            margin-right: 0.5rem;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1><i class="fas fa-shopping-cart"></i> E2E-Commerce</h1>
+            <p>Sistema Completo de E-commerce - Demonstração</p>
+        </div>
+
+        <div class="demo-section">
+            <h2><i class="fas fa-rocket"></i> Funcionalidades Implementadas</h2>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Sistema de autenticação completo (login/cadastro)</li>
+                <li><i class="fas fa-check"></i> Catálogo de produtos integrado com DummyJSON API</li>
+                <li><i class="fas fa-check"></i> Carrinho de compras com controle de quantidade</li>
+                <li><i class="fas fa-check"></i> Sistema de pagamento (PIX, cartão crédito/débito)</li>
+                <li><i class="fas fa-check"></i> Gestão de pedidos com status e histórico</li>
+                <li><i class="fas fa-check"></i> Gestão de endereços (até 3 endereços)</li>
+                <li><i class="fas fa-check"></i> Sistema de logística e rastreamento</li>
+                <li><i class="fas fa-check"></i> Interface responsiva e moderna</li>
+                <li><i class="fas fa-check"></i> Validações de segurança e sessão</li>
+                <li><i class="fas fa-check"></i> Integração com ViaCEP para endereços</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2><i class="fas fa-key"></i> Credenciais de Teste</h2>
+            <div class="credentials">
+                <h3>Login DummyJSON (Recomendado)</h3>
+                <p><strong>Usuário:</strong> emilys</p>
+                <p><strong>Senha:</strong> emilyspass</p>
+            </div>
+            
+            <div class="credentials">
+                <h3>Cartões de Teste</h3>
+                <p><strong>Crédito Aprovado:</strong> 4111111111111111 (CVV: 123)</p>
+                <p><strong>Débito Aprovado:</strong> 4900000000000000 (CVV: 111)</p>
+                <p><strong>Crédito Reprovado:</strong> 4000000000000002 (CVV: 123)</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2><i class="fas fa-info-circle"></i> Como Testar</h2>
+            <ol>
+                <li><strong>Login:</strong> Use as credenciais do DummyJSON ou crie uma nova conta</li>
+                <li><strong>Produtos:</strong> Navegue pelo catálogo e adicione produtos ao carrinho</li>
+                <li><strong>Carrinho:</strong> Ajuste quantidades e prossiga para o checkout</li>
+                <li><strong>Endereço:</strong> Adicione um endereço (integração com ViaCEP)</li>
+                <li><strong>Pagamento:</strong> Teste PIX ou cartões com os dados fornecidos</li>
+                <li><strong>Pedidos:</strong> Acompanhe o status e histórico dos pedidos</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Importante:</strong> Este é um sistema de demonstração. Todos os dados são simulados e não há integração real com sistemas de pagamento.
+        </div>
+
+        <div class="demo-actions">
+            <a href="index.html" class="btn btn-large">
+                <i class="fas fa-play"></i> Iniciar Demonstração
+            </a>
+        </div>
+
+        <div class="demo-section">
+            <h2><i class="fas fa-cogs"></i> Tecnologias Utilizadas</h2>
+            <ul class="feature-list">
+                <li><i class="fas fa-code"></i> HTML5 semântico e acessível</li>
+                <li><i class="fas fa-paint-brush"></i> CSS3 com Flexbox e Grid</li>
+                <li><i class="fas fa-code"></i> JavaScript ES6+ com classes</li>
+                <li><i class="fas fa-cloud"></i> DummyJSON API para produtos</li>
+                <li><i class="fas fa-map-marker-alt"></i> ViaCEP API para endereços</li>
+                <li><i class="fas fa-database"></i> LocalStorage para persistência</li>
+                <li><i class="fas fa-mobile-alt"></i> Design responsivo</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

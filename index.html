@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E2E-Commerce - Marketplace Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-shopping-cart"></i> E2E-Commerce</h1>
+                </div>
+                
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="#" class="nav-link" data-page="home">Início</a></li>
+                        <li><a href="#" class="nav-link" data-page="products">Produtos</a></li>
+                        <li><a href="#" class="nav-link" data-page="orders">Pedidos</a></li>
+                        <li><a href="#" class="nav-link" data-page="profile">Perfil</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Buscar produtos...">
+                        <button id="searchBtn" title="Buscar produtos"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <button class="user-btn" id="userBtn">
+                            <i class="fas fa-user"></i>
+                            <span id="userName">Entrar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Home Page -->
+            <div id="homePage" class="page active">
+                <section class="hero">
+                    <div class="hero-content">
+                        <h2>Bem-vindo ao E2E-Commerce</h2>
+                        <p>Encontre os melhores produtos com os melhores preços</p>
+                        <button class="btn btn-primary" data-page="products">Ver Produtos</button>
+                    </div>
+                </section>
+
+                <section class="features">
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-shipping-fast"></i>
+                            <h3>Frete Grátis</h3>
+                            <p>Compras acima de R$ 399,00</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Compra Segura</h3>
+                            <p>Pagamento 100% protegido</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-headset"></i>
+                            <h3>Suporte 24/7</h3>
+                            <p>Atendimento sempre disponível</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Products Page -->
+            <div id="productsPage" class="page">
+                <div class="page-header">
+                    <h2>Produtos</h2>
+                    <div class="filters">
+                        <select id="categoryFilter" title="Filtrar por categoria">
+                            <option value="">Todas as categorias</option>
+                        </select>
+                        <select id="sortFilter" title="Ordenar produtos">
+                            <option value="title">Nome</option>
+                            <option value="price">Preço</option>
+                            <option value="rating">Avaliação</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Cart Page -->
+            <div id="cartPage" class="page">
+                <div class="page-header">
+                    <h2>Carrinho de Compras</h2>
+                </div>
+                
+                <div class="cart-content">
+                    <div class="cart-items" id="cartItems">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    
+                    <div class="cart-summary">
+                        <div class="summary-item">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Frete:</span>
+                            <span id="shipping">R$ 0,00</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span>Total:</span>
+                            <span id="total">R$ 0,00</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" id="checkoutBtn">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Page -->
+            <div id="ordersPage" class="page">
+                <div class="page-header">
+                    <h2>Meus Pedidos</h2>
+                </div>
+                
+                <div class="orders-list" id="ordersList">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profilePage" class="page">
+                <div class="page-header">
+                    <h2>Meu Perfil</h2>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-tabs">
+                        <button class="tab-btn active" data-tab="profile">Dados Pessoais</button>
+                        <button class="tab-btn" data-tab="addresses">Endereços</button>
+                        <button class="tab-btn" data-tab="security">Segurança</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div id="profileTab" class="tab-pane active">
+                            <form class="profile-form" id="profileForm">
+                                <div class="form-group">
+                                    <label for="fullName">Nome Completo</label>
+                                    <input type="text" id="fullName" name="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile">Perfil</label>
+                                    <select id="profile" name="profile" disabled>
+                                        <option value="client">Cliente</option>
+                                        <option value="seller">Vendedor</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            </form>
+                        </div>
+                        
+                        <div id="addressesTab" class="tab-pane">
+                            <div class="addresses-header">
+                                <h3>Meus Endereços</h3>
+                                <button class="btn btn-secondary" id="addAddressBtn">Adicionar Endereço</button>
+                            </div>
+                            <div class="addresses-list" id="addressesList">
+                                <!-- Addresses will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div id="securityTab" class="tab-pane">
+                            <form class="security-form" id="securityForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">Senha Atual</label>
+                                    <input type="password" id="currentPassword" name="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">Nova Senha</label>
+                                    <input type="password" id="newPassword" name="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirmar Nova Senha</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Entrar</h3>
+                <span class="close" data-modal="loginModal">&times;</span>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+            </form>
+            <p class="modal-footer">
+                Não tem conta? <a href="#" id="showRegister">Cadastre-se</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cadastrar</h3>
+                <span class="close" data-modal="registerModal">&times;</span>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerFullName">Nome Completo</label>
+                    <input type="text" id="registerFullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                    <small>Mínimo 10 caracteres com números, letras e caracteres especiais</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerProfile">Perfil</label>
+                    <select id="registerProfile" name="profile" required>
+                        <option value="">Selecione</option>
+                        <option value="client">Cliente</option>
+                        <option value="seller">Vendedor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Cadastrar</button>
+            </form>
+            <p class="modal-footer">
+                Já tem conta? <a href="#" id="showLogin">Entrar</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Address Modal -->
+    <div id="addressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="addressModalTitle">Adicionar Endereço</h3>
+                <span class="close" data-modal="addressModal">&times;</span>
+            </div>
+            <form id="addressForm">
+                <input type="hidden" id="addressId" name="id">
+                <div class="form-group">
+                    <label for="addressType">Tipo de Endereço</label>
+                    <select id="addressType" name="type" required>
+                        <option value="">Selecione</option>
+                        <option value="residential">Residencial</option>
+                        <option value="commercial">Comercial</option>
+                        <option value="delivery">Entrega</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="addressCep">CEP</label>
+                    <input type="text" id="addressCep" name="cep" required maxlength="9">
+                </div>
+                <div class="form-group">
+                    <label for="addressStreet">Rua</label>
+                    <input type="text" id="addressStreet" name="street" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressNumber">Número</label>
+                    <input type="text" id="addressNumber" name="number" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressComplement">Complemento</label>
+                    <input type="text" id="addressComplement" name="complement">
+                </div>
+                <div class="form-group">
+                    <label for="addressNeighborhood">Bairro</label>
+                    <input type="text" id="addressNeighborhood" name="neighborhood" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressCity">Cidade</label>
+                    <input type="text" id="addressCity" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressState">Estado</label>
+                    <input type="text" id="addressState" name="state" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Salvar Endereço</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>Finalizar Compra</h3>
+                <span class="close" data-modal="checkoutModal">&times;</span>
+            </div>
+            <div class="checkout-content">
+                <div class="checkout-steps">
+                    <div class="step active" data-step="address">1. Endereço</div>
+                    <div class="step" data-step="payment">2. Pagamento</div>
+                    <div class="step" data-step="confirmation">3. Confirmação</div>
+                </div>
+                
+                <div class="checkout-step-content">
+                    <div id="checkoutAddress" class="step-pane active">
+                        <h4>Selecione o endereço de entrega</h4>
+                        <div class="addresses-selection" id="checkoutAddresses">
+                            <!-- Addresses will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="checkoutPayment" class="step-pane">
+                        <h4>Forma de Pagamento</h4>
+                        <div class="payment-methods">
+                            <div class="payment-tabs">
+                                <button class="payment-tab active" data-method="pix">PIX</button>
+                                <button class="payment-tab" data-method="credit">Cartão de Crédito</button>
+                                <button class="payment-tab" data-method="debit">Cartão de Débito</button>
+                            </div>
+                            
+                            <div class="payment-content">
+                                <div id="pixPayment" class="payment-method active">
+                                    <div class="pix-info">
+                                        <p>Escaneie o QR Code ou copie a chave PIX</p>
+                                        <div class="pix-qr" id="pixQR"></div>
+                                        <div class="pix-key" id="pixKey"></div>
+                                        <div class="pix-timer" id="pixTimer"></div>
+                                    </div>
+                                </div>
+                                
+                                <div id="creditPayment" class="payment-method">
+                                    <form id="creditForm">
+                                        <div class="form-group">
+                                            <label for="cardNumber">Número do Cartão</label>
+                                            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="cardExpiry">Validade</label>
+                                                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cardCvv">CVV</label>
+                                                <input type="text" id="cardCvv" name="cardCvv" placeholder="000" maxlength="3">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cardName">Nome no Cartão</label>
+                                            <input type="text" id="cardName" name="cardName" required>
+                                        </div>
+                                        <div class="installments" id="installments">
+                                            <!-- Installments will be loaded here -->
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <div id="debitPayment" class="payment-method">
+                                    <form id="debitForm">
+                                        <div class="form-group">
+                                            <label for="debitCardNumber">Número do Cartão</label>
+                                            <input type="text" id="debitCardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="debitCardExpiry">Validade</label>
+                                                <input type="text" id="debitCardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="debitCardCvv">CVV</label>
+                                                <input type="text" id="debitCardCvv" name="cardCvv" placeholder="000" maxlength="3">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="debitCardName">Nome no Cartão</label>
+                                            <input type="text" id="debitCardName" name="cardName" required>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="checkoutConfirmation" class="step-pane">
+                        <h4>Confirmação do Pedido</h4>
+                        <div class="order-summary" id="orderSummary">
+                            <!-- Order summary will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkout-actions">
+                    <button class="btn btn-secondary" id="checkoutPrev">Anterior</button>
+                    <button class="btn btn-primary" id="checkoutNext">Próximo</button>
+                    <button class="btn btn-success" id="checkoutConfirm" class="hidden">Confirmar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Redirects for GitHub Pages
+# Redirect root to demo page for better user experience
+
+/ /demo.html 200
