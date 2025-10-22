@@ -1,2 +1,7 @@
 name = "e2e-commerce"
 compatibility_date = "2024-01-01"
+
+# Variáveis de ambiente para Cloudflare Access
+[vars]
+POLICY_AUD = "ae8aa3552865f287279d3bcf91dd3a7b1910f14adf0f05010a123e6d2e0edd55"
+TEAM_DOMAIN = "https://abarbosa-e2e.cloudflareaccess.com"
