@@ -1,0 +1,25 @@
+{
+  "name": "e2e-commerce-api",
+  "version": "1.0.0",
+  "description": "E2E-Commerce API using Cloudflare Workers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "test": "wrangler dev --test"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "api",
+    "ecommerce",
+    "authentication"
+  ],
+  "author": "E2E-Commerce Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {}
+}

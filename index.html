@@ -6,6 +6,23 @@
     <title>E2E-Commerce - Marketplace Online</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="E2E-Commerce">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192x192.png">
 </head>
 <body>
     <!-- Header -->
@@ -447,6 +464,30 @@
 
     <!-- Toast Notifications -->
     <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Custom Logout Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content logout-modal">
+            <div class="logout-header">
+                <div class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <h3>Encerrar Sessão</h3>
+            </div>
+            <div class="logout-body">
+                <p>Deseja realmente sair da sua conta?</p>
+                <p class="logout-warning">Você será deslogado e precisará fazer login novamente.</p>
+            </div>
+            <div class="logout-actions">
+                <button class="btn btn-secondary" id="cancelLogout">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn btn-danger" id="confirmLogout">
+                    <i class="fas fa-sign-out-alt"></i> Sim, Sair
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

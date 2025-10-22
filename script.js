@@ -14,12 +14,44 @@ class E2ECommerce {
     }
 
     init() {
+        this.cleanupOldData();
         this.loadUserData();
         this.setupEventListeners();
         this.showPage('home');
         this.loadProducts();
         this.updateCartDisplay();
         this.startSessionTimer();
+        this.registerServiceWorker();
+        this.setupPWAInstall();
+    }
+
+    // ==================== LIMPEZA DE DADOS ====================
+    
+    // Limpar dados antigos/inválidos
+    cleanupOldData() {
+        // Verificar se há dados de sessão antigos sem timestamp
+        const userData = JSON.parse(localStorage.getItem('e2e_user_data') || '{}');
+        const sessionTimestamp = localStorage.getItem('e2e_session_timestamp');
+        
+        if (userData.currentUser && !sessionTimestamp) {
+            // Dados antigos sem timestamp - limpar
+            this.clearLocalStorage();
+            console.log('Dados antigos limpos - sem timestamp de sessão');
+        }
+        
+        // Verificar se há dados corrompidos
+        try {
+            const testData = JSON.parse(localStorage.getItem('e2e_user_data') || '{}');
+            if (testData.currentUser && (!testData.currentUser.id || !testData.currentUser.fullName)) {
+                // Dados corrompidos - limpar
+                this.clearLocalStorage();
+                console.log('Dados corrompidos limpos');
+            }
+        } catch (error) {
+            // Dados inválidos - limpar
+            this.clearLocalStorage();
+            console.log('Dados inválidos limpos');
+        }
     }
 
     // ==================== SISTEMA DE AUTENTICAÇÃO ====================
@@ -140,6 +172,15 @@ class E2ECommerce {
             this.lookupCEP();
         });
 
+        // Validação em tempo real do nome completo
+        document.getElementById('registerFullName').addEventListener('input', (e) => {
+            this.validateFullNameField(e.target);
+        });
+
+        document.getElementById('fullName').addEventListener('input', (e) => {
+            this.validateFullNameField(e.target);
+        });
+
         // Checkout
         document.getElementById('checkoutBtn').addEventListener('click', () => {
             this.startCheckout();
@@ -168,6 +209,25 @@ class E2ECommerce {
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 this.hideModal(e.target.id);
+            }
+        });
+
+        // Modal de logout
+        document.getElementById('confirmLogout').addEventListener('click', () => {
+            this.confirmLogout();
+        });
+
+        document.getElementById('cancelLogout').addEventListener('click', () => {
+            this.cancelLogout();
+        });
+
+        // Fechar modal de logout com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const logoutModal = document.getElementById('logoutModal');
+                if (logoutModal && logoutModal.style.display === 'block') {
+                    this.cancelLogout();
+                }
             }
         });
     }
@@ -200,6 +260,9 @@ class E2ECommerce {
                     profile: 'client' // Default profile
                 };
                 
+                // Salvar timestamp da sessão
+                localStorage.setItem('e2e_session_timestamp', Date.now().toString());
+                
                 this.saveUserData();
                 this.updateUserDisplay();
                 this.hideModal('loginModal');
@@ -222,13 +285,18 @@ class E2ECommerce {
         const profile = document.getElementById('registerProfile').value;
 
         // Validações
-        if (!this.validatePassword(password)) {
-            this.showToast('Senha deve ter no mínimo 10 caracteres com números, letras e caracteres especiais', 'error');
+        if (!this.validateFullName(fullName)) {
+            this.showToast('Nome completo deve ter pelo menos 3 letras no nome e pelo menos 1 letra no sobrenome', 'error');
             return;
         }
 
         if (!this.validateEmail(email)) {
             this.showToast('E-mail inválido', 'error');
+            return;
+        }
+
+        if (!this.validatePassword(password)) {
+            this.showToast('Senha deve ter no mínimo 10 caracteres com números, letras e caracteres especiais', 'error');
             return;
         }
 
@@ -254,6 +322,10 @@ class E2ECommerce {
             localStorage.setItem('e2e_users', JSON.stringify(existingUsers));
 
             this.currentUser = userData;
+            
+            // Salvar timestamp da sessão
+            localStorage.setItem('e2e_session_timestamp', Date.now().toString());
+            
             this.saveUserData();
             this.updateUserDisplay();
             this.hideModal('registerModal');
@@ -267,15 +339,38 @@ class E2ECommerce {
     }
 
     logout() {
-        if (confirm('Deseja realmente sair?')) {
-            this.currentUser = null;
-            this.cart = [];
-            this.saveUserData();
-            this.updateUserDisplay();
-            this.showPage('home');
-            this.showToast('Logout realizado com sucesso!', 'success');
-            this.clearSessionTimer();
-        }
+        this.showLogoutModal();
+    }
+
+    // Mostrar modal de logout personalizado
+    showLogoutModal() {
+        this.showModal('logoutModal');
+    }
+
+    // Confirmar logout
+    confirmLogout() {
+        // Limpar todos os dados do usuário
+        this.clearUserData();
+        this.clearSessionTimer();
+        
+        // Limpar localStorage completamente
+        this.clearLocalStorage();
+        
+        // Fechar modal
+        this.hideModal('logoutModal');
+        
+        // Mostrar mensagem de sucesso
+        this.showToast('Logout realizado com sucesso!', 'success');
+        
+        // Forçar reload da página para garantir logout completo
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+
+    // Cancelar logout
+    cancelLogout() {
+        this.hideModal('logoutModal');
     }
 
     // ==================== VALIDAÇÕES ====================
@@ -292,6 +387,74 @@ class E2ECommerce {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
+    validateFullName(fullName) {
+        if (!fullName || fullName.trim().length === 0) {
+            return false;
+        }
+        
+        // Remover espaços extras e dividir em palavras
+        const names = fullName.trim().split(/\s+/);
+        
+        // Deve ter pelo menos 2 palavras (nome e sobrenome)
+        if (names.length < 2) {
+            return false;
+        }
+        
+        // Primeira palavra (nome) deve ter pelo menos 3 letras
+        if (names[0].length < 3) {
+            return false;
+        }
+        
+        // Pelo menos uma das outras palavras (sobrenome) deve ter pelo menos 1 letra
+        const hasValidSurname = names.slice(1).some(name => name.length >= 1);
+        
+        return hasValidSurname;
+    }
+
+    // Validação em tempo real do campo nome completo
+    validateFullNameField(field) {
+        const value = field.value.trim();
+        const isValid = this.validateFullName(value);
+        
+        // Remover classes de validação anteriores
+        field.classList.remove('valid', 'invalid');
+        
+        if (value.length === 0) {
+            // Campo vazio - não mostrar erro ainda
+            return;
+        }
+        
+        if (isValid) {
+            field.classList.add('valid');
+            this.removeFieldError(field);
+        } else {
+            field.classList.add('invalid');
+            this.showFieldError(field, 'Nome deve ter pelo menos 3 letras e sobrenome com pelo menos 1 letra');
+        }
+    }
+
+    // Mostrar erro no campo
+    showFieldError(field, message) {
+        this.removeFieldError(field);
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error';
+        errorDiv.textContent = message;
+        errorDiv.style.color = '#dc3545';
+        errorDiv.style.fontSize = '0.875rem';
+        errorDiv.style.marginTop = '0.25rem';
+        
+        field.parentNode.appendChild(errorDiv);
+    }
+
+    // Remover erro do campo
+    removeFieldError(field) {
+        const existingError = field.parentNode.querySelector('.field-error');
+        if (existingError) {
+            existingError.remove();
+        }
+    }
+
     // ==================== GESTÃO DE DADOS ====================
 
     saveUserData() {
@@ -304,6 +467,13 @@ class E2ECommerce {
         localStorage.setItem('e2e_user_data', JSON.stringify(userData));
     }
 
+    // Limpar dados do localStorage
+    clearLocalStorage() {
+        localStorage.removeItem('e2e_user_data');
+        localStorage.removeItem('e2e_users');
+        localStorage.removeItem('e2e_session_timestamp');
+    }
+
     loadUserData() {
         const userData = JSON.parse(localStorage.getItem('e2e_user_data') || '{}');
         this.currentUser = userData.currentUser || null;
@@ -311,8 +481,23 @@ class E2ECommerce {
         this.orders = userData.orders || [];
         this.addresses = userData.addresses || [];
         
+        // Verificar se a sessão ainda é válida
         if (this.currentUser) {
-            this.updateUserDisplay();
+            // Verificar se há timestamp de sessão
+            const sessionTimestamp = localStorage.getItem('e2e_session_timestamp');
+            const now = Date.now();
+            const sessionTimeout = 30 * 60 * 1000; // 30 minutos
+            
+            if (sessionTimestamp && (now - parseInt(sessionTimestamp)) > sessionTimeout) {
+                // Sessão expirada - fazer logout automático
+                this.clearUserData();
+                this.clearLocalStorage();
+                this.showToast('Sessão expirada. Faça login novamente.', 'warning');
+            } else {
+                // Sessão válida - atualizar timestamp
+                localStorage.setItem('e2e_session_timestamp', now.toString());
+                this.updateUserDisplay();
+            }
         }
     }
 
@@ -337,9 +522,29 @@ class E2ECommerce {
         }
     }
 
+    // Limpar completamente os dados do usuário
+    clearUserData() {
+        this.currentUser = null;
+        this.cart = [];
+        this.orders = [];
+        this.addresses = [];
+        this.saveUserData();
+        this.updateUserDisplay();
+        this.updateCartDisplay();
+        this.showPage('home');
+    }
+
     // ==================== NAVEGAÇÃO ====================
 
     showPage(page) {
+        // Verificar se a página requer login
+        const protectedPages = ['cart', 'orders', 'profile'];
+        if (protectedPages.includes(page) && !this.currentUser) {
+            this.showToast('Faça login para acessar esta página', 'warning');
+            this.showModal('loginModal');
+            return;
+        }
+        
         // Esconder todas as páginas
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         
@@ -374,9 +579,11 @@ class E2ECommerce {
         if (this.currentUser) {
             userName.textContent = this.currentUser.fullName;
             userBtn.innerHTML = `<i class="fas fa-user"></i> <span>${this.currentUser.fullName}</span>`;
+            userBtn.title = 'Clique para sair';
         } else {
             userName.textContent = 'Entrar';
             userBtn.innerHTML = '<i class="fas fa-user"></i> <span>Entrar</span>';
+            userBtn.title = 'Clique para entrar';
         }
     }
 
@@ -1086,6 +1293,16 @@ class E2ECommerce {
             return;
         }
 
+        if (!this.validateFullName(fullName)) {
+            this.showToast('Nome completo deve ter pelo menos 3 letras no nome e pelo menos 1 letra no sobrenome', 'error');
+            return;
+        }
+
+        if (!this.validateEmail(email)) {
+            this.showToast('E-mail inválido', 'error');
+            return;
+        }
+
         this.currentUser.fullName = fullName;
         this.currentUser.email = email;
         this.saveUserData();
@@ -1311,10 +1528,81 @@ class E2ECommerce {
         };
         return icons[type] || 'info-circle';
     }
+
+    // ==================== PWA FUNCTIONS ====================
+
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    }
+
+    // Instalar PWA
+    installPWA() {
+        if (this.deferredPrompt) {
+            this.deferredPrompt.prompt();
+            this.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                    this.showToast('App instalado com sucesso!', 'success');
+                }
+                this.deferredPrompt = null;
+            });
+        }
+    }
+
+    // Detectar prompt de instalação
+    setupPWAInstall() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            
+            // Mostrar botão de instalação no header
+            const installBtn = document.createElement('button');
+            installBtn.innerHTML = '<i class="fas fa-download"></i> Instalar App';
+            installBtn.className = 'btn btn-secondary';
+            installBtn.style.marginLeft = '1rem';
+            installBtn.onclick = () => this.installPWA();
+            
+            const headerActions = document.querySelector('.header-actions');
+            headerActions.appendChild(installBtn);
+        });
+
+        // Detectar se foi instalado
+        window.addEventListener('appinstalled', () => {
+            this.showToast('App instalado com sucesso!', 'success');
+        });
+    }
+
+    // Função de debug para limpar dados
+    clearAllData() {
+        if (confirm('Deseja limpar todos os dados? Isso fará logout e limpará o carrinho.')) {
+            this.clearUserData();
+            this.clearLocalStorage();
+            this.showToast('Todos os dados foram limpos!', 'success');
+            window.location.reload();
+        }
+    }
 }
 
 // Inicializar aplicação
 const e2eCommerce = new E2ECommerce();
+
+// Funções de debug globais
+window.clearAllData = () => e2eCommerce.clearAllData();
+window.debugUserData = () => {
+    console.log('Current User:', e2eCommerce.currentUser);
+    console.log('LocalStorage:', localStorage.getItem('e2e_user_data'));
+    console.log('Session Timestamp:', localStorage.getItem('e2e_session_timestamp'));
+};
 
 // Formatação de cartão
 document.addEventListener('DOMContentLoaded', function() {

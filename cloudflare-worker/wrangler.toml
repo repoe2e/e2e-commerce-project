@@ -1,0 +1,37 @@
+# Cloudflare Worker Configuration
+name = "e2e-commerce-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables
+[vars]
+JWT_SECRET = "sua-chave-secreta-super-segura-aqui"
+ALLOWED_ORIGINS = "https://e2ecommerce.com,http://localhost:3000"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "e2e-commerce-db"
+database_id = "your-database-id-here"
+
+# KV Storage for sessions (optional)
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
+
+# Routes
+routes = [
+  { pattern = "api.e2ecommerce.com/*", zone_name = "e2ecommerce.com" }
+]
+
+# Build configuration
+[build]
+command = ""
+
+# Environment-specific settings
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.staging]
+vars = { ENVIRONMENT = "staging" }

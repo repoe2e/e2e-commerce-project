@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Ícones PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .icon-item img {
+            max-width: 100%;
+            height: auto;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ Gerador de Ícones PWA - E2E-Commerce</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instruções:</h3>
+            <ol>
+                <li>Clique em "Gerar Ícones" para criar todos os tamanhos</li>
+                <li>Clique com botão direito em cada ícone e "Salvar imagem como..."</li>
+                <li>Salve com os nomes: icon-72x72.png, icon-96x96.png, etc.</li>
+                <li>Coloque todos os arquivos na pasta <code>icons/</code></li>
+            </ol>
+        </div>
+
+        <button class="btn" onclick="generateIcons()">🎨 Gerar Ícones</button>
+        <button class="btn" onclick="downloadAll()">📥 Baixar Todos</button>
+
+        <div class="icon-preview" id="iconPreview">
+            <!-- Ícones serão gerados aqui -->
+        </div>
+
+        <div class="instructions">
+            <h3>✅ Checklist PWA:</h3>
+            <ul>
+                <li>✅ manifest.json criado</li>
+                <li>✅ sw.js (Service Worker) criado</li>
+                <li>✅ Meta tags PWA no index.html</li>
+                <li>⏳ Ícones PNG (gerando agora)</li>
+                <li>⏳ Meta tags no demo.html</li>
+                <li>⏳ Prompt de instalação</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        function generateIcons() {
+            const preview = document.getElementById('iconPreview');
+            preview.innerHTML = '';
+            
+            iconSizes.forEach(size => {
+                const iconItem = document.createElement('div');
+                iconItem.className = 'icon-item';
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Criar gradiente
+                const gradient = ctx.createLinearGradient(0, 0, size, size);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                
+                // Desenhar fundo
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, size, size);
+                
+                // Adicionar bordas arredondadas
+                ctx.globalCompositeOperation = 'destination-in';
+                ctx.beginPath();
+                ctx.roundRect(0, 0, size, size, size * 0.15);
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+                
+                // Desenhar carrinho de compras
+                const scale = size / 512;
+                ctx.save();
+                ctx.scale(scale, scale);
+                
+                // Carrinho
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(148, 208, 200, 120);
+                
+                // Rodas
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.beginPath();
+                ctx.arc(188, 440, 25, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(308, 440, 25, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Alça
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(348, 128, 80, 8);
+                ctx.fillRect(348, 88, 8, 40);
+                
+                // Produtos
+                ctx.fillStyle = '#667eea';
+                ctx.fillRect(168, 240, 30, 30);
+                ctx.fillStyle = '#764ba2';
+                ctx.fillRect(208, 240, 30, 30);
+                ctx.fillStyle = '#667eea';
+                ctx.fillRect(248, 240, 30, 30);
+                ctx.fillStyle = '#764ba2';
+                ctx.fillRect(288, 240, 30, 30);
+                
+                // Texto E2E
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('E2E', 248, 360);
+                
+                ctx.restore();
+                
+                iconItem.innerHTML = `
+                    <h4>${size}x${size}</h4>
+                    <img src="${canvas.toDataURL()}" alt="Icon ${size}x${size}">
+                    <br>
+                    <button class="btn" onclick="downloadIcon(${size})">📥 Baixar</button>
+                `;
+                
+                preview.appendChild(iconItem);
+            });
+        }
+        
+        function downloadIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Mesmo código de desenho do generateIcons
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.15);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            const scale = size / 512;
+            ctx.save();
+            ctx.scale(scale, scale);
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fillRect(148, 208, 200, 120);
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.beginPath();
+            ctx.arc(188, 440, 25, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(308, 440, 25, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fillRect(348, 128, 80, 8);
+            ctx.fillRect(348, 88, 8, 40);
+            
+            ctx.fillStyle = '#667eea';
+            ctx.fillRect(168, 240, 30, 30);
+            ctx.fillStyle = '#764ba2';
+            ctx.fillRect(208, 240, 30, 30);
+            ctx.fillStyle = '#667eea';
+            ctx.fillRect(248, 240, 30, 30);
+            ctx.fillStyle = '#764ba2';
+            ctx.fillRect(288, 240, 30, 30);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('E2E', 248, 360);
+            
+            ctx.restore();
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadAll() {
+            iconSizes.forEach((size, index) => {
+                setTimeout(() => {
+                    downloadIcon(size);
+                }, index * 500);
+            });
+        }
+        
+        // Gerar ícones automaticamente
+        window.onload = generateIcons;
+    </script>
+</body>
+</html>
+

@@ -618,6 +618,138 @@ body {
     border-color: #667eea;
 }
 
+/* Validação de campos */
+.form-group input.valid {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.form-group input.invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Logout Modal Styles */
+.logout-modal {
+    max-width: 400px;
+    text-align: center;
+}
+
+.logout-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.logout-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.logout-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.logout-header h3 {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.logout-body {
+    margin-bottom: 2rem;
+}
+
+.logout-body p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.logout-warning {
+    color: #ff6b6b !important;
+    font-size: 0.9rem !important;
+    font-weight: 500;
+}
+
+.logout-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.logout-actions .btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.logout-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.logout-actions .btn-danger {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    border: none;
+    color: white;
+}
+
+.logout-actions .btn-danger:hover {
+    background: linear-gradient(135deg, #ff5252, #e53935);
+}
+
+.logout-actions .btn-secondary {
+    background: #6c757d;
+    border: none;
+    color: white;
+}
+
+.logout-actions .btn-secondary:hover {
+    background: #5a6268;
+}
+
+/* Animação do modal de logout */
+.logout-modal {
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .form-group small {
     color: #666;
     font-size: 0.9rem;
