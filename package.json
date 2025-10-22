@@ -1,38 +1,10 @@
 {
   "name": "e2e-commerce",
   "version": "1.0.0",
-  "description": "Sistema completo de e-commerce com HTML, CSS e JavaScript",
-  "main": "index.html",
+  "private": true,
   "scripts": {
-    "start": "echo 'Static site ready'",
-    "dev": "npx live-server --port=3000 --open=/demo.html",
-    "build": "echo 'Build completed - static files ready'",
-    "deploy": "echo 'Deploy completed'",
-    "test": "echo 'No tests configured'"
+    "build": "node scripts/build-static.js"
   },
-  "keywords": [
-    "ecommerce",
-    "html",
-    "css",
-    "javascript",
-    "dummyjson",
-    "marketplace",
-    "shopping-cart",
-    "payment",
-    "responsive"
-  ],
-  "author": "E2E Treinamentos",
-  "license": "MIT",
-  "devDependencies": {
-    "http-server": "^14.1.1",
-    "live-server": "^1.2.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/e2etreinamentos/e2e-commerce.git"
-  },
-  "bugs": {
-    "url": "https://github.com/e2etreinamentos/e2e-commerce/issues"
-  },
-  "homepage": "https://github.com/e2etreinamentos/e2e-commerce#readme"
+  "dependencies": {},
+  "devDependencies": {}
 }

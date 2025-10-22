@@ -1,29 +1,2 @@
-# Cloudflare Pages Configuration
-# Otimizado para builds mais rápidos
-
 name = "e2e-commerce"
 compatibility_date = "2024-01-01"
-
-# Configurações de build otimizadas
-[build]
-command = "echo 'Static site ready'"
-cwd = ""
-
-# Configurações de deploy
-[deploy]
-command = "echo 'Deploy completed'"
-
-# Variáveis de ambiente
-[vars]
-NODE_ENV = "production"
-BUILD_OPTIMIZATION = "true"
-
-# Configurações de cache
-[cache]
-enabled = true
-max_age = 31536000
-
-# Configurações de performance
-[performance]
-minify = true
-compress = true

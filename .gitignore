@@ -73,6 +73,9 @@ temp/
 dist/
 build/
 
+# Cloudflare Pages build output
+dist/
+
 # Cloudflare specific
 .wrangler/
 wrangler.toml.bak

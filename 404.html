@@ -4,87 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página não encontrada - E2E-Commerce</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        .error-container {
-            text-align: center;
-            background: rgba(255,255,255,0.1);
-            padding: 3rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        .error-code {
-            font-size: 8rem;
-            font-weight: bold;
-            margin: 0;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
-        }
-        .error-message {
-            font-size: 1.5rem;
-            margin: 1rem 0 2rem;
-            opacity: 0.9;
-        }
-        .error-description {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        .links {
-            margin-top: 2rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-        .links a:hover {
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
 </head>
 <body>
-    <div class="error-container">
-        <h1 class="error-code">404</h1>
-        <h2 class="error-message">Página não encontrada</h2>
-        <p class="error-description">
-            A página que você está procurando não existe ou foi movida.
-        </p>
-        <a href="/" class="btn">Voltar ao Início</a>
-        <div class="links">
-            <a href="/demo.html">Demonstração</a>
-            <a href="/index.html">Sistema Principal</a>
-            <a href="https://github.com/SEU_USUARIO/e2e-commerce">GitHub</a>
+    <div class="container">
+        <div class="error-page">
+            <div class="error-content">
+                <h1>404</h1>
+                <h2>Página não encontrada</h2>
+                <p>A página que você está procurando não existe.</p>
+                <a href="/" class="btn btn-primary">Voltar ao início</a>
+            </div>
         </div>
     </div>
 </body>
