@@ -4,11 +4,10 @@
   "description": "Sistema completo de e-commerce com HTML, CSS e JavaScript",
   "main": "index.html",
   "scripts": {
-    "start": "npx http-server . -p 3000 -o",
+    "start": "echo 'Static site ready'",
     "dev": "npx live-server --port=3000 --open=/demo.html",
-    "build": "echo 'Build completed - static files ready for GitHub Pages'",
-    "deploy": "git add . && git commit -m 'Deploy to GitHub Pages' && git push origin main",
-    "predeploy": "npm run build",
+    "build": "echo 'Build completed - static files ready'",
+    "deploy": "echo 'Deploy completed'",
     "test": "echo 'No tests configured'"
   },
   "keywords": [

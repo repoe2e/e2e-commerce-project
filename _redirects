@@ -1,4 +1,14 @@
-# Redirects for GitHub Pages
-# Redirect root to demo page for better user experience
+# Cloudflare Pages Redirects
+# Handle SPA routing and fallbacks
 
-/ /demo.html 200
+# Redirect www to non-www
+https://www.e2ecommerce.com/* https://e2ecommerce.com/:splat 301
+
+# Handle trailing slashes
+/*/ /:splat 301
+
+# SPA fallback - redirect all routes to index.html
+/* /index.html 200
+
+# API routes (if needed)
+/api/* https://api.e2ecommerce.com/:splat 200
